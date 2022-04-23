@@ -1,0 +1,85 @@
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="css/navbar.css" rel="stylesheet" type="text/css">
+    <link href="css/navbar_final.css" rel="stylesheet" type="text/css">
+    
+</head>
+<body>
+  <!-- <%- include('./partials/navbar.ejs') %> -->
+  
+  
+    <% if( ishmc ){ %>
+        <%- include("./partials/navbar_for_hmc.ejs") %>
+    <% }else{ %>
+        <%- include('./partials/navbar.ejs') %>
+    <% } %>
+    <hr>
+
+    <div style="height: 30px;margin-top:5px;
+    align-content: center;
+    margin-bottom: 5px;
+    padding-left:40%;
+    align-self: top;
+    align-items: center;">
+        <h3 id="alert" 
+            style="font-weight:bold;
+            color:rgb(213, 92, 92);">
+        </h3>
+    </div>
+    <!------------------------------- data storage --------------------- -->
+  <span id="datastore" data-response="<%= response %>"></span>
+
+  
+  <div class="blogs content">
+    <% if (blogs.length > 0) { %>
+      <h2>Announcements</h2>
+      <% blogs.forEach(blog => { %>
+        <a class="single" href="/blogs/<%= blog._id %>">
+          <h3 class="title"><%= blog.title %></h3>
+          <p class="snippet"><%= blog.snippet %></p>
+        </a>
+      <% }) %>
+    <% } else { %>
+      <p>There are no announcements to display...</p>
+    <% } %>
+    
+  </div>
+    
+
+    <script>
+        
+        // hamburger section
+        const hamburger = document.querySelector(".ham");  
+        const navsub = document.querySelector(".nav-sub");  
+        hamburger.addEventListener('click', () => {  
+            hamburger.classList.toggle("change");
+            navsub.classList.toggle("nav-change");
+        });
+        function tempAlert(msg,duration)
+        {
+            var el = document.getElementById('alert');
+            el.innerHTML = msg;
+            setTimeout(function(){
+                el.parentNode.removeChild(el);
+            },duration);
+            document.body.appendChild(el);
+        }
+        var res=document.getElementById('datastore').dataset.response;
+        if(res !=="nothing" && res!== ""){
+        tempAlert(res,2000)
+            .then((result)=>{
+                console.log("done");
+            })
+            .catch(err=>console.log(err));
+        }
+        
+    </script>
+</body>
+</html>

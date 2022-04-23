@@ -1,0 +1,26 @@
+
+  #searchbar,#searchbar2{
+    border-radius: 10px;
+    width:90%;
+    height:28px;
+  }
+
+  input[type=text] {
+     width: 30%;
+     -webkit-transition: width 0.15s ease-in-out;
+     transition: width 0.15s ease-in-out;
+  }
+
+  /* When the input field gets focus,
+       change its width to 100% */
+  input[type=text]:focus {
+    width: 70%;
+  }
+
+ #list{
+   font-size:  1.5em;
+  }
+
+.animals{
+  display: list-item;    
+ }

@@ -1,0 +1,82 @@
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="css/navbar.css" rel="stylesheet" type="text/css">
+    <link href="css/navbar_final.css" rel="stylesheet" type="text/css">
+    <style>
+      /* index styles */
+      body{
+        margin:20px;
+        padding:10px;
+      }
+    .blogs a{
+      display: block;
+      margin: 40px 0;
+      padding-left: 30px;
+      border-left: 6px solid crimson;
+    }
+    .blogs a:hover h3{
+      color: crimson;
+    }
+
+    /* details styles */
+    .details{
+      position: relative;
+    }
+    .delete{
+      position: absolute;
+      top: 0;
+      right: 0;
+      border-radius: 50%;
+      padding: 8px;
+    }
+    </style>
+</head>
+<body>
+  <% if( ishmc ){ %>
+      <%- include("./partials/navbar_for_hmc.ejs") %>
+  <% }else{ %>
+      <%- include('./partials/navbar.ejs') %>
+  <% } %>
+    <hr>
+    <div class="details content">
+      <h2><%= blog.title %></h2>
+      <div class="content">
+        <p><%= blog.body %></p>
+      </div>
+      <br><br>
+      <form action="/deleteblog/<%= blog._id %>" method="POST">
+        <button type="submit"  data-doc="<%= blog._id %>" style="
+        background-color: #ed515e;border-radius: 5px;
+          font-weight: bolder;font-size:large;">Delete Notice</button>
+        </form>
+    </div>
+    <script>
+        // hamburger section
+        const hamburger = document.querySelector(".ham");  
+        const navsub = document.querySelector(".nav-sub");  
+        hamburger.addEventListener('click', () => {  
+            hamburger.classList.toggle("change");
+            navsub.classList.toggle("nav-change");
+        });
+        function deleteBlog(id){
+          var url="/deleteblog/"+id;
+          fetch(url,{method:"DELETE"})
+                    .then((response)=>{
+                      response.json();
+                    })
+                    .then((data)=>{
+                        window.location.href=data.redirect;
+                    })
+                    .catch((err)=>console.log(err));
+
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dues</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="css/navbar.css" rel="stylesheet" type="text/css">
+    <link href="css/navbar_final.css" rel="stylesheet" type="text/css">
+    <link href="css/search_bar.css" rel="stylesheet" type="text/css">
+    <style>
+        body{
+            margin-left:2%;
+            margin-right: 2%;
+            overflow-y: scroll;
+        }
+        .box{
+            border:2px solid green;
+            height:fit-content;
+            width:auto;
+            margin:5px;
+            padding:10px;
+            margin-right:10%;
+        }
+        .container{
+            margin-left:8%;
+        }
+    </style>
+</head>
+<body>
+  <% if( ishmc ){ %>
+      <%- include("./partials/navbar_for_hmc.ejs") %>
+  <% }else{ %>
+      <%- include('./partials/navbar.ejs') %>
+  <% } %>
+    <hr>
+    <div class="container">
+        <% if(dues.length > 0 ){ %>
+            <input id="searchbar" onkeyup="search_animal()" type="text"
+                name="search" placeholder="Search friends..">
+            <% for(var i=0;i< dues.length ; i++){ %>
+                <span class="animals">
+                    <div class="box seachfriendname" style="font-weight:bolder; font-size:large; 
+                    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">
+                        <span>
+                            <h2>NAME: <%= dues[i].name %></h2>
+                        </span><br>
+                        <span>
+                            Description: <%= dues[i].description %>
+                        </span><br>
+                        <!-- <form action="/deletedues/<%= dues[i]._id %>" method="POST">
+                            <button type="submit" style="float: left;background-color: #ed515e;border-radius: 5px;
+                                font-weight: bolder;font-size:large;
+                                height:40px;width:150px;margin-top:10px;">
+                                    Delete Dues
+                                </button>
+                        </form> -->
+                        
+                    </div>
+                
+            <% } %>
+        <% }else{ %>
+            No dues pending........
+        <% } %>
+                    
+    </div>   
+    <script>
+        // JavaScript code for search bar friends
+        function search_animal() {
+            let input = document.getElementById('searchbar').value
+            input=input.toLowerCase();
+            let x = document.getElementsByClassName('seachfriendname');
+        
+            for (i = 0; i < x.length; i++) { 
+                if (!x[i].innerHTML.toLowerCase().includes(input)) {
+                    x[i].style.display="none";
+                }
+                else {
+                    x[i].style.display="list-item";                 
+                }
+            }
+        }
+        // hamburger section
+        const hamburger = document.querySelector(".ham");  
+        const navsub = document.querySelector(".nav-sub");  
+        hamburger.addEventListener('click', () => {  
+            hamburger.classList.toggle("change");
+            navsub.classList.toggle("nav-change");
+        });
+        function tempAlert(msg,duration)
+        {
+            var el = document.getElementById('alert');
+            el.innerHTML = msg;
+            setTimeout(function(){
+                el.parentNode.removeChild(el);
+            },duration);
+            document.body.appendChild(el);
+        }
+        function deleteDue(id){
+            var url = "/deletedues/"+id;
+            fetch(url,{method:"DELETE"})
+                .then((response)=>{
+                    // alert called here
+                    
+                    tempAlert("User deleted Sucessfully",2000)
+                        .then((result)=>{
+                            console.log("done");
+                            response.json();
+                        })
+                        .catch(err=>console.log(err));
+                })
+                .then((data)=>{
+                    window.location.href=data.redirect;
+                })
+                .catch((err)=>console.log(err));
+        }
+        var res=document.getElementById('datastore').dataset.response;
+        if(res !=="nothing" && res!== ""){
+          tempAlert(res,2000)
+              .then((result)=>{
+                  console.log("done");
+              })
+              .catch(err=>console.log(err));
+        }
+    </script>
+</body>
+</html>

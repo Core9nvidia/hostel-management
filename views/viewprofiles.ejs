@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/css/navbar.css" rel="stylesheet" type="text/css">
+    <link href="/css/navbar_final.css" rel="stylesheet" type="text/css">
+    <link href="/css/search_bar.css" rel="stylesheet" type="text/css">
+    <style>
+        body{
+            margin-left:2%;
+            margin-right: 2%;
+            overflow-y: scroll;
+        }
+        .box{
+            border:2px solid green;
+            height:fit-content;
+            width:auto;
+            margin:5px;
+            padding:10px;
+            margin-right:10%;
+        }
+        .container{
+            margin-left:8%;
+        }
+    </style>
+</head>
+<body>
+  <% if( ishmc ){ %>
+      <%- include("./partials/navbar_for_hmc.ejs") %>
+  <% }else{ %>
+      <%- include('./partials/navbar.ejs') %>
+  <% } %>
+    
+    <!-- <div style="height: 10px;margin-top:20px;
+    align-content: center;
+    margin-bottom: 20px;
+    padding-left:40%;
+    align-self: top;
+    align-items: center;">
+        <h3 id="alert" 
+            style="font-weight:bold;
+            color:rgb(213, 92, 92);">
+        </h3>
+    </div> -->
+    <hr>
+    <div class="container">
+        
+                <input id="searchbar" onkeyup="search_animal()" type="text"
+                    name="search" placeholder="Search friends..">
+                    <% if(users.length > 0 ){ %>
+                        <% for(var i=0;i< users.length ; i++){ %>
+                            <span class="animals">
+                                
+                                    <div class="box seachfriendname" style="font-weight:bolder; font-size:large; 
+                                    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">
+                                    
+                                    <a href="/seeprofile/<%= users[i]._id %>">
+                                        <span>
+                                            NAME: <%= users[i].firstname %> <%= users[i].lastname %>
+                                        </span><br>
+                                        <span>
+                                            Email: <%= users[i].email %>
+                                        </span><br>
+                                        <span>
+                                            Phone: <%= users[i].phone %>
+                                        </span><br>
+                                        <span>
+                                            Room: <%= users[i].room %>
+                                        </span><br>
+                                        <span>
+                                            Is an HMC member: <% if(users[i].hmc){ %>
+                                                Yes
+                                            <% }else{ %>
+                                                No
+                                                <% } %>
+                                        </span><br>
+                                        <span>
+                                            Breakfast Diet Count : <%= users[i].breakfastDiet %>
+                                        </span><br>
+                                        <span>
+                                            Lunch Diet Count : <%= users[i].lunchDiet %>
+                                        </span><br>
+                                        <span>
+                                            Dinner Diet Count : <%= users[i].dinnerDiet %>
+                                        </span><br>
+                                    </a>
+                                    <form action="getdues/<%= users[i]._id %>" method="POST">
+                                        <button type="submit" style="float: left;background-color: rgb(8, 76, 8);border-radius: 5px;
+                                        font-weight: bolder;font-size:large;
+                                        height:40px;width:fit-content;margin-top:10px;">
+                                            View All Dues
+                                        </button>
+                                    </form>
+                                    <form action="deleteuser/<%= users[i]._id %>" method="POST">
+                                        <button type="submit" style="float: left;background-color: #ed515e;border-radius: 5px;
+                                        font-weight: bolder;font-size:large;margin-left:10px;
+                                        height:40px;width:150px;margin-top:10px;">
+                                            Delete User
+                                        </button>
+                                    </form>
+                                    
+                                    </div>
+                           
+                        <% } %>
+                    <% } %>
+                    
+    </div>    
+    <script>
+        function tempAlert(msg,duration)
+        {
+            var el = document.getElementById('alert');
+            el.innerHTML = msg;
+            setTimeout(function(){
+                el.parentNode.removeChild(el);
+            },duration);
+            document.body.appendChild(el);
+        }
+        function deleteUser(id){
+            var url = "/deleteuser/"+id;
+            fetch(url,{method:"DELETE"})
+                .then((response)=>{
+                    // alert called here
+                    console.log("done");
+                            response.json();
+                    // tempAlert("User deleted Sucessfully",2000)
+                    //     .then((result)=>{
+                    //         console.log("done");
+                    //         response.json();
+                    //     })
+                    //     .catch(err=>console.log(err));
+                })
+                .catch((err)=>console.log(err));
+        }
+        function getdues(id){
+            let url="/getdues/"+id;
+            fetch(url,{method:"GET"})
+                .then((response)=>{
+                    //
+                })
+                .catch((err)=>console.log(err));
+        }
+        // hamburger section
+        const hamburger = document.querySelector(".ham");  
+        const navsub = document.querySelector(".nav-sub");  
+        hamburger.addEventListener('click', () => {  
+            hamburger.classList.toggle("change");
+            navsub.classList.toggle("nav-change");
+        });
+
+
+        // JavaScript code for search bar friends
+        function search_animal() {
+            let input = document.getElementById('searchbar').value
+            input=input.toLowerCase();
+            let x = document.getElementsByClassName('seachfriendname');
+        
+            for (i = 0; i < x.length; i++) { 
+                if (!x[i].innerHTML.toLowerCase().includes(input)) {
+                    x[i].style.display="none";
+                }
+                else {
+                    x[i].style.display="list-item";                 
+                }
+            }
+        }
+    </script>
+</body>
+</html>

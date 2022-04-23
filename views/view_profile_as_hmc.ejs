@@ -1,0 +1,161 @@
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/css/navbar.css" rel="stylesheet" type="text/css">
+    <link href="/css/navbar_final.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <!-- partial:index.partial.html -->
+  <html lang="en">
+  <head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  </head>
+<body>
+  <% if( ishmc ){ %>
+      <%- include("./partials/navbar_for_hmc.ejs") %>
+  <% }else{ %>
+      <%- include('./partials/navbar.ejs') %>
+  <% } %>
+    <hr>
+    
+ <!-- forms  -->
+  <div id="form">
+    <div class="container">
+      <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-md-8 col-md-offset-2">
+        <div id="userform">
+          <div class="tab-content">
+            <div class="tab-pane fade active in" id="signup">
+              <h2 class="text-uppercase text-center"> User Profile</h2>
+
+              <!-- --------------------------------------- user details form ---------------------------------- -->
+
+              <form action="/updateprofilehmc/<%= user._id %>" method="POST">
+                  <div class="form-group">
+                      <img src="/profile_image.jpg" style="border-radius: 50%; height:auto;">
+                  </div>
+                <div class="row">
+                  <div class="col-xs-12 col-sm-6">
+                    <div class="form-group">
+                      <label>First Name<span class="req">*</span> </label>
+                      <input type="text" class="form-control" id="first_name" name="firstname" required data-validation-required-message="Please enter your name." value= <%= user.firstname %>>
+                      <p class="help-block text-danger"></p>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6">
+                    <div class="form-group">
+                      <label> Last Name<span class="req">*</span> </label>
+                      <input type="text" class="form-control" id="last_name" name="lastname"  required data-validation-required-message="Please enter your name." value=<%= user.lastname %>>
+                      <p class="help-block text-danger"></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label> Email<span class="req">*</span> </label>
+                  <input type="email" class="form-control" id="email" name="email" required data-validation-required-message="Please enter your email address." value=<%= user.email %>>
+                  <p class="help-block text-danger"></p>
+                </div>
+                <div class="form-group">
+                  <label> Phone no. <span class="req">*</span> </label>
+                  <input type="tel" class="form-control" id="phone" name="phone" required data-validation-required-message="Please enter your phone number." value=<%= user.phone %>>
+                  <p class="help-block text-danger"></p>
+                </div>
+                <div class="form-group">
+                  <label> Roll no. <span class="req">*</span> </label>
+                  <input type="text" class="form-control" id="roll_no" name="rollnumber" required data-validation-required-message="Please enter your roll number." value=<%= user.rollnumber %>>
+                  <p class="help-block text-danger"></p>
+                </div>
+                <!-- <div class="form-group">
+                  <label> Password<span class="req">*</span> </label>
+                  <input type="password" class="form-control" id="password" name="password" required data-validation-required-message="Please enter your password" value=<%= user.password %>>
+                  <p class="help-block text-danger"></p>
+                </div> -->
+                <div class="form-group">
+                  <label>Breakfast Diet Count : <span class="req"></span> </label>
+                  <input type="text" class="form-control" id="breakfastDiet" name="breakfastdiet" required data-validation-required-message="Please enter your name." value= <%= user.breakfastDiet %>>
+                  <p class="help-block text-danger"></p>
+                </div>
+                <div class="form-group">
+                  <label>Lunch Diet Count : <span class="req"></span> </label>
+                  <input type="text" class="form-control" id="lunchDiet" name="lunchdiet" required data-validation-required-message="Please enter your name." value= <%= user.lunchDiet %>>
+                  <p class="help-block text-danger"></p>
+                </div>
+                <div class="form-group">
+                  <label>Dinner Diet Count : <span class="req"></span> </label>
+                  <input type="text" class="form-control" id="dinnerDiet" name="dinnerdiet" required data-validation-required-message="Please enter your name." value= <%= user.dinnerDiet %>>
+                  <p class="help-block text-danger"></p>
+                </div>
+                
+                <div class="form-group" >
+                  <label> Is HMC member ? </label>
+                  <input style="width:max-content; height:max-content; display: inline; margin-left:20px; border:10px solid black;" type="checkbox" class="form-control" id="hmc" name="hmc">
+                  <p class="help-block text-danger"></p>
+                </div>
+                <div class="mrgn-30-top">
+                  <button style="background-color: #04AA6D;" type="submit" class="btn btn-larger btn-block" >
+                  Update Profile
+                  </button>
+                </div>
+                
+              </form>
+              
+              <br>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- --------------------------------------- to be adjusted-------------------------------------- -->
+    <h3 id="alert" 
+      style="font-weight:bold;
+      color:rgb(213, 92, 92);
+      margin-top:20px;
+      align-content: center;
+      margin-bottom: 20px;
+      padding-left:40%;
+      align-self: center;
+      align-items: center;
+      ">
+  </h3>
+  <!-- /.container --> 
+</div>
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
+<!-- partial -->
+  <script  src="/script.js"></script>
+    <script>
+        // hamburger section
+        const hamburger = document.querySelector(".ham");  
+        const navsub = document.querySelector(".nav-sub");  
+        hamburger.addEventListener('click', () => {  
+            hamburger.classList.toggle("change");
+            navsub.classList.toggle("nav-change");
+        });
+        function tempAlert(msg,duration)
+        {
+            var el = document.getElementById('alert');
+            el.innerHTML = msg;
+            setTimeout(function(){
+                el.parentNode.removeChild(el);
+            },duration);
+            document.body.appendChild(el);
+        }
+        var res=document.getElementById('datastore').dataset.response;
+        if(res !=="nothing" && res!== ""){
+          tempAlert(res,2000)
+              .then((result)=>{
+                  console.log("done");
+              })
+              .catch(err=>console.log(err));
+        }
+    </script>
+</body>
+</html>

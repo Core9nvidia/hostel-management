@@ -1,0 +1,58 @@
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="css/navbar.css" rel="stylesheet" type="text/css">
+    <link href="css/navbar_final.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <% if( ishmc ){ %>
+      <%- include("./partials/navbar_for_hmc.ejs") %>
+  <% }else{ %>
+      <%- include('./partials/navbar.ejs') %>
+  <% } %>
+    <hr>
+    <div class="create-blog content">
+        <form action="/createdue" method="POST">
+          <label for="email">Email of user:</label>
+          <input type="email" id="email" name="email" required>
+          <label for="name">Name :</label>
+          <input type="text" id="name" name="name" required>
+          <label for="description">Description:</label>
+          <textarea id="description" name="description" required></textarea>
+          <button>Submit</button>
+        </form>
+    </div>
+    <script>
+        // hamburger section
+        const hamburger = document.querySelector(".ham");  
+        const navsub = document.querySelector(".nav-sub");  
+        hamburger.addEventListener('click', () => {  
+            hamburger.classList.toggle("change");
+            navsub.classList.toggle("nav-change");
+        });
+        function tempAlert(msg,duration)
+        {
+            var el = document.getElementById('alert');
+            el.innerHTML = msg;
+            setTimeout(function(){
+                el.parentNode.removeChild(el);
+            },duration);
+            document.body.appendChild(el);
+        }
+        var res=document.getElementById('datastore').dataset.response;
+        if(res !=="nothing" && res!== ""){
+          tempAlert(res,2000)
+              .then((result)=>{
+                  console.log("done");
+              })
+              .catch(err=>console.log(err));
+        }
+    </script>
+</body>
+</html>

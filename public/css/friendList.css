@@ -1,0 +1,63 @@
+body{
+    overflow-y: scroll;
+}
+.container{
+    margin-left:6%;
+    margin-right:6%;
+    padding:0px;
+}
+hr.line{
+    border-top:1px solid rgb(114, 111, 111);
+}
+.dashboard{
+    font-size: larger;
+    height: 30px;
+    margin-bottom: 3px;
+    font-weight: bold;
+}
+#settleup{
+    height: 20px;
+    margin-bottom: 3px;
+}
+.friends{
+    padding: 0%;
+}
+.friends li{
+    width: 49%;
+    border-radius: 6px;
+    height:fit-content;
+    text-align: center;
+    margin-top:3px;
+    vertical-align: top;
+    padding:0px;
+}
+.animals{
+    margin-left:5%;
+    margin-right: 5%;
+    height:28px;
+    background-color: rgb(29,154,200);
+    border-radius: 5px;
+    padding:0px;
+    margin-top:10px;
+    font-weight: bolder;
+    font-size: 1.4em;
+}
+.left{
+    float:left;
+    margin-left:5%;
+}
+.right{
+    float:right;
+    margin-right:5%;
+}
+
+#searchbar,#searchbar2{
+    background-color: rgb(240, 238, 238);
+}
+.invitees{
+    float:right;
+}
+.container button{
+    background-color: rgb(17, 141, 65);
+    border-radius: 6px;
+}
