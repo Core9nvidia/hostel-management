@@ -30,7 +30,21 @@ function isLoggedIn(req,res,next){
 function isHMC(req,res,next){
     req.session.hmc ? next() : res.redirect('/home');
 }
-
+function update_session_signup(req,result2){
+    // save the user data in session store
+    req.session.isAuth=true,
+    req.session.email=req.body.email;
+    req.session.hmc=req.body.hmc;
+    req.session.firstname=req.body.firstname;
+    req.session.lastname=req.body.lastname;
+    req.session.userid= result2._id;
+}
+function request_session_update(req){
+    req.session.isAuth=true;
+    req.session.email=req.body.email;
+    req.session.firstname=req.body.firstname;
+    req.session.lastname=req.body.lastname;
+}
 // redirect to login/signup page
 app.get('/',(req,res)=>{
     res.render('index',{response:"nothing",ishmc:req.session.hmc,name:req.session.firstname});
@@ -129,10 +143,7 @@ app.post('/updateprofile',(req,res)=>{
     User.findOneAndUpdate({email:req.session.email},user)
         .then((result)=>{
             // update details of current user in the session store
-            req.session.email=req.body.email;
-            req.session.hmc=req.body.hmc;
-            req.session.firstname=req.body.firstname;
-            req.session.lastname=req.body.lastname;
+            request_session_update(req);
             // redirect to home page
             res.redirect('/home');
         })// catch errors if any and print them out
@@ -158,10 +169,7 @@ app.post('/updateprofilehmc/:id',(req,res)=>{
         .then((result)=>{
             if(req.session.userid == id){
                 // update the local session data
-                req.session.email=req.body.email;
-                req.session.hmc=req.body.hmc;
-                req.session.firstname=req.body.firstname;
-                req.session.lastname=req.body.lastname;
+                request_session_update(req);
             }
             //redirect to home page
             res.redirect('/home');
@@ -179,13 +187,7 @@ app.post('/login',(req,res)=>{
             if(!result)res.render('index',{response:'No user with this email ID',ishmc:req.session.hmc,name:req.session.firstname});
             if(req.body.password === result.password){
                 // store details of current user in the session store
-                req.session.isAuth=true,
-                req.session.email=result.email;
-                req.session.hmc=result.hmc;
-                req.session.firstname=result.firstname;
-                req.session.lastname=result.lastname;
-                req.session.userid= result._id;
-                console.log("see the session ",req.session);
+                update_session_signup(req,result);
                 // redirect user to home page
                 res.redirect('/home');
             }else{
@@ -208,6 +210,7 @@ app.post('/deleteaccount',isLoggedIn,async (req,res)=>{
         res.render('deleteaccount',{response:'Wrong password!!',ishmc:req.session.hmc,name:req.session.firstname});
     }
 })
+
 // Sign up to website
 app.post('/signup',(req,res)=>{
     console.log("signup : " ,req.body);
@@ -230,12 +233,7 @@ app.post('/signup',(req,res)=>{
                     newuser.save()
                         .then((result2)=>{
                             // save the user data in session store
-                            req.session.isAuth=true,
-                            req.session.email=req.body.email;
-                            req.session.hmc=req.body.hmc;
-                            req.session.firstname=req.body.firstname;
-                            req.session.lastname=req.body.lastname;
-                            req.session.userid= result2._id;
+                            update_session_signup(req,result2);
                             // after saving, redirect user to home page
                             res.redirect('/home');
                         })
