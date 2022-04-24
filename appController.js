@@ -279,3 +279,62 @@ exports.getduesId_post=async (req,res)=>{
 exports.createdues_get=(req,res)=>{
     res.render('createdue',{response:"nothing",ishmc:req.session.hmc,name:req.session.firstname});
 };
+exports.cleaningrequest_get=(req,res)=>{
+    res.render('cleaningrequest',{response:"nothing",ishmc:req.session.hmc,name:req.session.firstname});
+};
+exports.updatecleaningrequest_post=(req,res)=>{
+    res.render('updatecleaningrequest',{response:"nothing",ishmc:req.session.hmc,name:req.session.firstname});
+};
+exports.createannouncement_post= (req, res) => {
+    if(req.body.body.length <= 250){
+        const newAnnouncement = new Blog(req.body);
+        newAnnouncement.save()
+            .then((result)=>{
+                res.redirect('/home');
+            })
+            .catch(err=>console.log(err));
+    }else{
+        res.render('createAnnouncement', { title: 'Create a new blog',response:"Announcememnt body length can't be greater than 255." , ishmc:req.session.hmc, name:req.session.firstname});
+    }
+};
+exports.deleteannouncement_delete= (req, res) => {
+    let blogId = req.params.id;
+    Blog.findByIdAndDelete(blogId)
+        .then(result => {
+            res.redirect('/home');
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+exports.updateannouncement_post=(req,res)=>{
+    //console.log("delete -user ",req.body);
+    // find user with given id and delete
+    Blog.findByIdAndDelete(req.session.userid)
+        .then((result)=>{
+            // after deletion, redirect user to home page
+            res.redirect('/home');
+        })
+        .catch((err)=>console.log(err));
+};
+exports.filecomplaint_post=(req,res)=>{
+    //
+};
+exports.resolvecomplaint_post=(req,res)=>{
+    //
+};
+exports.viewcomplaint_get=(req,res)=>{
+    //
+};
+exports.availablebooklist_get=(req,res)=>{
+    //
+};
+exports.viewissuedbooks_get=(req,res)=>{
+    //
+};
+exports.issuebook_post=(req,res)=>{
+    //
+};
+exports.returnbook_post=(req,res)=>{
+    //res.render('updatecleaningrequest',{response:"nothing",ishmc:req.session.hmc,name:req.session.firstname});
+};

@@ -117,19 +117,7 @@ app.get('/createannouncement',isHMC, (req, res) => {
     res.render('createAnnouncement', { title: 'Create a new blog',response:"nothing" , ishmc:req.session.hmc, name:req.session.firstname});
 });
 // create an announcement
-app.post('/createannouncement',isHMC, (req, res) => {
-    if(req.body.body.length <= 255){
-        const newAnnouncement = new Blog(req.body);
-        newAnnouncement.save()
-            .then((result)=>{
-                res.redirect('/home');
-            })
-            .catch(err=>console.log(err));
-    }else{
-        res.render('createAnnouncement', { title: 'Create a new blog',response:"Announcememnt body length can't be greater than 255." , ishmc:req.session.hmc, name:req.session.firstname});
-    }
-    
-});
+app.post('/createannouncement',isHMC,appController.createannouncement_post);
 // show a particular blog with given id
 app.get('/blogs/:id',isLoggedIn, (req, res) => {
     const blogId = req.params.id;
@@ -141,17 +129,9 @@ app.get('/blogs/:id',isLoggedIn, (req, res) => {
             console.log(err);
         });
 });
+app.post('/updateannouncement',isHMC,appController.updateannouncement_post);
 // delete an announcement
-app.delete('/deleteblog/:id', (req, res) => {
-    let blogId = req.params.id;
-    Blog.findByIdAndDelete(blogId)
-        .then(result => {
-            res.redirect('/home');
-        })
-        .catch(err => {
-            console.log(err);
-        });
-});
+app.delete('/deleteblog/:id',appController.deleteannouncement_delete);
 // delete aan announcement
 app.post('/deleteblog/:id',appController.deleteannouncement_post);
 
@@ -166,6 +146,8 @@ app.get('/createdue',isLoggedIn,isHMC,appController.createdues_get);
 app.post('/createdue', appController.createdue_post);
 // delete a due
 app.post('/deletedues/:id',appController.deletedues_post);
+app.get('/cleaningrequest',isLoggedIn,appController.cleaningrequest_get);
+app.get('/updatecleaningrequest',isLoggedIn,appController.updatecleaningrequest_post);
 // ------------------------------------------------------------------------------------
 // 404 page in case url does not matches
 app.use((req, res) => {

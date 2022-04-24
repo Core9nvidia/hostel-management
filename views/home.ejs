@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="css/navbar.css" rel="stylesheet" type="text/css">
     <link href="css/navbar_final.css" rel="stylesheet" type="text/css">
-    
+    <link href="/css/search_bar.css" rel="stylesheet" type="text/css">
 </head>
 <body>
   <!-- <%- include('./partials/navbar.ejs') %> -->
@@ -40,7 +40,10 @@
   <div class="blogs content">
     <% if (blogs.length > 0) { %>
       <h2>Announcements</h2>
+      <input id="searchbar" onkeyup="search_announcements()" type="text"
+                    name="search" placeholder="Search announcements..">
       <% blogs.forEach(blog => { %>
+        <span class="animals seachfriendname"></span>
         <a class="single" href="/blogs/<%= blog._id %>">
           <h3 class="title"><%= blog.title %></h3>
           <p class="snippet"><%= blog.snippet %></p>
@@ -79,7 +82,21 @@
             })
             .catch(err=>console.log(err));
         }
+        // JavaScript code for search bar friends
+        function search_announcements() {
+            let input = document.getElementById('searchbar').value
+            input=input.toLowerCase();
+            let x = document.getElementsByClassName('seachfriendname');
         
+            for (i = 0; i < x.length; i++) { 
+                if (!x[i].innerHTML.toLowerCase().includes(input)) {
+                    x[i].style.display="none";
+                }
+                else {
+                    x[i].style.display="list-item";                 
+                }
+            }
+        }
     </script>
 </body>
 </html>
