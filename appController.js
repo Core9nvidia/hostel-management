@@ -294,7 +294,7 @@ exports.createannouncement_post= (req, res) => {
             })
             .catch(err=>console.log(err));
     }else{
-        res.render('createAnnouncement', { title: 'Create a new blog',response:"Announcememnt body length can't be greater than 255." , ishmc:req.session.hmc, name:req.session.firstname});
+        res.render('createAnnouncement', {response:"Announcememnt body length can't be greater than 250." , ishmc:req.session.hmc, name:req.session.firstname});
     }
 };
 exports.deleteannouncement_delete= (req, res) => {

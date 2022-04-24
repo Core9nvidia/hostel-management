@@ -13,7 +13,8 @@
 </head>
 <body>
   <!-- <%- include('./partials/navbar.ejs') %> -->
-  
+  <!------------------------------- data storage --------------------- -->
+  <span id="datastore" data-response="<%= response %>"></span>
   
   <% if( ishmc ){ %>
       <%- include("./partials/navbar_for_hmc.ejs") %>
@@ -31,9 +32,20 @@
         <textarea id="body" name="body" required></textarea>
         <button>Submit</button>
       </form>
+      <div style="height: 30px;margin-top:5px;
+        align-content: center;
+        margin-bottom: 5px;
+        padding-left:40%;
+        align-self: top;
+        margin-left:40%;
+        align-items: center;">
+          <h3 id="alert" 
+              style="font-weight:bold;
+              color:rgb(213, 92, 92);">
+          </h3>
+      </div>
     </div>
     
-
     <script>
         
         // hamburger section
@@ -43,7 +55,23 @@
             hamburger.classList.toggle("change");
             navsub.classList.toggle("nav-change");
         });
-
+        function tempAlert(msg,duration)
+        {
+            var el = document.getElementById('alert');
+            el.innerHTML = msg;
+            setTimeout(function(){
+                el.parentNode.removeChild(el);
+            },duration);
+            document.body.appendChild(el);
+        }
+        var res=document.getElementById('datastore').dataset.response;
+        if(res !=="nothing" && res!== ""){
+        tempAlert(res,5000)
+            .then((result)=>{
+                console.log("done");
+            })
+            .catch(err=>console.log(err));
+        }
         
     </script>
 </body>
