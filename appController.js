@@ -89,7 +89,7 @@ exports.deleteaccount_post=async (req,res)=>{
         res.render('deleteaccount',{response:'Wrong password!!',ishmc:req.session.hmc,name:req.session.firstname});
     }
 };
-exports.deleteaccounthmc_post=async (req,res)=>{
+exports.deleteroomchangerequesthmc_post=async (req,res)=>{
     let userData = await User.findOne({email:req.session.email});
     if(userData.password === req.body.password){
         await User.findOneAndDelete({email:req.session.email});
@@ -262,4 +262,20 @@ exports.addroomchangerequest_post=(req,res)=>{
                     res.redirect('/home');
                 })
         })
-}
+};
+exports.viewdietcount=async (req,res)=>{
+    let userData = await User.findOne({email:req.session.email});
+    res.render('viewDietCount',{response:"nothing",user:userData,ishmc:req.session.hmc, name:req.session.firstname});
+};
+exports.dues_get=async (req,res)=>{
+    let result  = await User.findOne({email:req.session.email}).populate('dues');
+    res.render('view_all_dues',{dues:result.dues,response:"nothing",name:req.session.firstname,ishmc:req.session.hmc});
+};
+
+exports.getduesId_post=async (req,res)=>{
+    let result  = await User.findById(req.params.id).populate('dues');
+    res.render('view_all_dues_as_hmc',{dues:result.dues,response:"nothing",name:req.session.firstname,ishmc:req.session.hmc});
+};
+exports.createdues_get=(req,res)=>{
+    res.render('createdue',{response:"nothing",ishmc:req.session.hmc,name:req.session.firstname});
+};

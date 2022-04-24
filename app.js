@@ -88,10 +88,7 @@ app.post('/deleteaccount',isLoggedIn,appController.deleteaccount_post);
 // Sign up to website
 app.post('/signup',appController.signup_post);
 // view diets count
-app.get('/viewdietcount',isLoggedIn, async (req,res)=>{
-    let userData = await User.findOne({email:req.session.email});
-    res.render('viewDietCount',{response:"nothing",user:userData,ishmc:req.session.hmc, name:req.session.firstname});
-});
+app.get('/viewdietcount',isLoggedIn, appController.viewdietcount);
 // delete a user profile
 app.post('/deleteprofile/:id',(req,res)=>{
     let id=req.params.id;
@@ -160,19 +157,11 @@ app.post('/deleteblog/:id',appController.deleteannouncement_post);
 
 // ---------------------------- dues  section--------------------------------------------------------
 // show dues of the person logged in 
-app.get('/dues',isLoggedIn,async (req,res)=>{
-    let result  = await User.findOne({email:req.session.email}).populate('dues');
-    res.render('view_all_dues',{dues:result.dues,response:"nothing",name:req.session.firstname,ishmc:req.session.hmc});
-});
+app.get('/dues',isLoggedIn,appController.dues_get);
 // show dues of a person for given id
-app.post('/getdues/:id',isHMC,async (req,res)=>{
-    let result  = await User.findById(req.params.id).populate('dues');
-    res.render('view_all_dues_as_hmc',{dues:result.dues,response:"nothing",name:req.session.firstname,ishmc:req.session.hmc});
-});
+app.post('/getdues/:id',isHMC,appController.getduesId_post);
 // show required details to create a new due
-app.get('/createdue',isLoggedIn,isHMC,(req,res)=>{
-    res.render('createdue',{response:"nothing",ishmc:req.session.hmc,name:req.session.firstname});
-});
+app.get('/createdue',isLoggedIn,isHMC,appController.createdues_get);
 // create a new due
 app.post('/createdue', appController.createdue_post);
 // delete a due
