@@ -13,7 +13,7 @@
 </head>
 <body>
   <!-- <%- include('./partials/navbar.ejs') %> -->
-  
+  <span id="datastore" data-response="<%= response %>"></span>
   
   <% if( ishmc ){ %>
       <%- include("./partials/navbar_for_hmc.ejs") %>
@@ -34,8 +34,17 @@
       </form>
       
     </div>
-    
-
+    <h3 id="alert" 
+        style="font-weight:bold;
+        color:rgb(213, 92, 92);
+        margin-top:20px;
+        align-content: center;
+        margin-bottom: 20px;
+        padding-left:40%;
+        align-self: center;
+        align-items: center;
+        ">
+    </h3>
     <script>
         
         // hamburger section
@@ -46,7 +55,23 @@
             navsub.classList.toggle("nav-change");
         });
 
-        
+        function tempAlert(msg,duration)
+        {
+            var el = document.getElementById('alert');
+            el.innerHTML = msg;
+            setTimeout(function(){
+                el.parentNode.removeChild(el);
+            },duration);
+            document.body.appendChild(el);
+        }
+        var res=document.getElementById('datastore').dataset.response;
+        if(res !=="nothing" && res!== ""){
+          tempAlert(res,2000)
+              .then((result)=>{
+                  console.log("done");
+              })
+              .catch(err=>console.log(err));
+        }
     </script>
 </body>
 </html>
