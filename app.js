@@ -30,21 +30,7 @@ function isLoggedIn(req,res,next){
 function isHMC(req,res,next){
     req.session.hmc ? next() : res.redirect('/home');
 }
-function update_session_signup(req,result2){
-    // save the user data in session store
-    req.session.isAuth=true,
-    req.session.email=req.body.email;
-    req.session.hmc=req.body.hmc;
-    req.session.firstname=req.body.firstname;
-    req.session.lastname=req.body.lastname;
-    req.session.userid= result2._id;
-}
-function request_session_update(req){
-    req.session.isAuth=true;
-    req.session.email=req.body.email;
-    req.session.firstname=req.body.firstname;
-    req.session.lastname=req.body.lastname;
-}
+
 // redirect to login/signup page
 app.get('/',(req,res)=>{
     res.render('index',{response:"nothing",ishmc:req.session.hmc,name:req.session.firstname});
@@ -189,11 +175,12 @@ app.post('/login',(req,res)=>{
                 // store details of current user in the session store
                 req.session.isAuth=true,
                 req.session.email=req.body.email;
-                req.session.hmc=req.body.hmc;
-                req.session.firstname=req.body.firstname;
-                req.session.lastname=req.body.lastname;
+                req.session.hmc=result.hmc;
+                req.session.firstname=result.firstname;
+                req.session.lastname=result.lastname;
                 req.session.userid= result._id;
                 // redirect user to home page
+                console.log("valjhdsdf ",req.session);
                 res.redirect('/home');
             }else{
                 // if password does not matches with the given id, show wrong id password message
@@ -219,6 +206,9 @@ app.post('/deleteaccount',isLoggedIn,async (req,res)=>{
 // Sign up to website
 app.post('/signup',(req,res)=>{
     console.log("signup : " ,req.body);
+    if(req.body.password.length<5 || req.body.password.length>20){
+        res.render('index',{response:'Password length must be between 5 and 20',ishmc:req.session.hmc,name:req.session.firstname})
+    }
     User.findOne({"email":req.body.email})
         .then((result)=>{
             console.log("user exist array ",result);
@@ -241,7 +231,7 @@ app.post('/signup',(req,res)=>{
                             //update_session_signup(req,result2);
                             req.session.isAuth=true,
                             req.session.email=req.body.email;
-                            req.session.hmc=req.body.hmc;
+                            req.session.hmc=varhmc;
                             req.session.firstname=req.body.firstname;
                             req.session.lastname=req.body.lastname;
                             req.session.userid= result2._id;
@@ -267,7 +257,23 @@ app.post('/deleteprofile/:id',(req,res)=>{
         })
         .catch(err=>console.log(err));
 });
-
+// room change seciotn ----------------------------------------------------------
+app.get('/roomchangerequest',isLoggedIn,async (req,res)=>{
+    let userData = await User.findOne({email:req.session.email});
+    res.render('roomchangerequestUpdate',{response:"nothing",user:userData, ishmc:req.session.hmc, name:req.session.firstname});
+});
+app.post('/updateroomchangerequest',(req,res)=>{
+    User.findOne({email:req.session.email})
+    .then((result)=>{
+        result.requestedroom=req.body.requestedroom;
+        result.reasonOfRoomChange=req.body.reason;
+        result.save()
+            .then((result2)=>{
+                res.redirect('/home');
+            })
+    })
+    .catch(err=>console.log(err));
+});
 // ---------------------------- announcement section -----------------------------ERROR
 // create an announcement
 app.get('/createannouncement',isHMC, (req, res) => {

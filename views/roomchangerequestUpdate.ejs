@@ -1,0 +1,52 @@
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/css/navbar.css" rel="stylesheet" type="text/css">
+    <link href="/css/navbar_final.css" rel="stylesheet" type="text/css">
+    
+</head>
+<body>
+  <!-- <%- include('./partials/navbar.ejs') %> -->
+  
+  
+  <% if( ishmc ){ %>
+      <%- include("./partials/navbar_for_hmc.ejs") %>
+  <% }else{ %>
+      <%- include('./partials/navbar.ejs') %>
+  <% } %>
+    <hr>
+    <div class="create-blog content">
+      <form action="/updateroomchangerequest" method="POST">
+        <label for="title">Current room :</label>
+        <input type="text" id="title" name="currentroom" readonly value="<%= user.room %>">
+        <label for="requestedroom">Requested Room:</label>
+        <input type="text" id="requestedroom" name="requestedroom" required value="<%= user.requestedroom %>">
+        <label for="body">Reasons and justification :</label>
+        <input type="text" id="body" name="reason" required value="<%= user.reasonOfRoomChange %>">
+        <button type="Submit" style="background-color:rgb(22, 152, 22);">Update</button>
+        <button style="margin-left:20px">Delete Request</button>
+      </form>
+      
+    </div>
+    
+
+    <script>
+        
+        // hamburger section
+        const hamburger = document.querySelector(".ham");  
+        const navsub = document.querySelector(".nav-sub");  
+        hamburger.addEventListener('click', () => {  
+            hamburger.classList.toggle("change");
+            navsub.classList.toggle("nav-change");
+        });
+
+        
+    </script>
+</body>
+</html>

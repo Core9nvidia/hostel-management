@@ -50,7 +50,15 @@ const mySchema=new Schema({
     dues:[{
         type:Schema.Types.ObjectId,
         ref:"due"
-    }]
+    }],
+    requestedroom:{
+        type:String,
+        default:""
+    },
+    reasonOfRoomChange:{
+        type:String,
+        default:""
+    }
     
 });
 
