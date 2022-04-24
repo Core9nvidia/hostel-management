@@ -187,7 +187,12 @@ app.post('/login',(req,res)=>{
             if(!result)res.render('index',{response:'No user with this email ID',ishmc:req.session.hmc,name:req.session.firstname});
             if(req.body.password === result.password){
                 // store details of current user in the session store
-                update_session_signup(req,result);
+                req.session.isAuth=true,
+                req.session.email=req.body.email;
+                req.session.hmc=req.body.hmc;
+                req.session.firstname=req.body.firstname;
+                req.session.lastname=req.body.lastname;
+                req.session.userid= result._id;
                 // redirect user to home page
                 res.redirect('/home');
             }else{
@@ -233,7 +238,13 @@ app.post('/signup',(req,res)=>{
                     newuser.save()
                         .then((result2)=>{
                             // save the user data in session store
-                            update_session_signup(req,result2);
+                            //update_session_signup(req,result2);
+                            req.session.isAuth=true,
+                            req.session.email=req.body.email;
+                            req.session.hmc=req.body.hmc;
+                            req.session.firstname=req.body.firstname;
+                            req.session.lastname=req.body.lastname;
+                            req.session.userid= result2._id;
                             // after saving, redirect user to home page
                             res.redirect('/home');
                         })

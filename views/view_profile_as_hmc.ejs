@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="/css/navbar.css" rel="stylesheet" type="text/css">
-    <link href="/css/navbar_final.css" rel="stylesheet" type="text/css">
+    <link href="css/navbar.css" rel="stylesheet" type="text/css">
+    <link href="css/navbar_final.css" rel="stylesheet" type="text/css">
 </head>
 <body>
   <!-- partial:index.partial.html -->
@@ -44,31 +44,31 @@
                   <div class="col-xs-12 col-sm-6">
                     <div class="form-group">
                       <label>First Name<span class="req">*</span> </label>
-                      <input type="text" class="form-control" id="first_name" name="firstname" required data-validation-required-message="Please enter your name." value= <%= user.firstname %>>
+                      <input type="text" class="form-control" id="first_name" name="firstname" data-validation-required-message="Please enter your name." value= <%= user.firstname %> readonly>
                       <p class="help-block text-danger"></p>
                     </div>
                   </div>
                   <div class="col-xs-12 col-sm-6">
                     <div class="form-group">
                       <label> Last Name<span class="req">*</span> </label>
-                      <input type="text" class="form-control" id="last_name" name="lastname"  required data-validation-required-message="Please enter your name." value=<%= user.lastname %>>
+                      <input type="text" class="form-control" id="last_name" name="lastname" data-validation-required-message="Please enter your name." value=<%= user.lastname %> readonly>
                       <p class="help-block text-danger"></p>
                     </div>
                   </div>
                 </div>
                 <div class="form-group">
                   <label> Email<span class="req">*</span> </label>
-                  <input type="email" class="form-control" id="email" name="email" required data-validation-required-message="Please enter your email address." value=<%= user.email %>>
+                  <input type="email" class="form-control" id="email" name="email"  data-validation-required-message="Please enter your email address." value=<%= user.email %> readonly>
                   <p class="help-block text-danger"></p>
                 </div>
                 <div class="form-group">
                   <label> Phone no. <span class="req">*</span> </label>
-                  <input type="tel" class="form-control" id="phone" name="phone" required data-validation-required-message="Please enter your phone number." value=<%= user.phone %>>
+                  <input type="tel" class="form-control" id="phone" name="phone" data-validation-required-message="Please enter your phone number." value=<%= user.phone %> readonly>
                   <p class="help-block text-danger"></p>
                 </div>
                 <div class="form-group">
                   <label> Roll no. <span class="req">*</span> </label>
-                  <input type="text" class="form-control" id="roll_no" name="rollnumber" required data-validation-required-message="Please enter your roll number." value=<%= user.rollnumber %>>
+                  <input type="text" class="form-control" id="roll_no" name="rollnumber" data-validation-required-message="Please enter your roll number." value=<%= user.rollnumber %> readonly>
                   <p class="help-block text-danger"></p>
                 </div>
                 <!-- <div class="form-group">
@@ -92,11 +92,11 @@
                   <p class="help-block text-danger"></p>
                 </div>
                 
-                <div class="form-group" >
+                <!-- <div class="form-group" >
                   <label> Is HMC member ? </label>
                   <input style="width:max-content; height:max-content; display: inline; margin-left:20px; border:10px solid black;" type="checkbox" class="form-control" id="hmc" name="hmc">
                   <p class="help-block text-danger"></p>
-                </div>
+                </div> -->
                 <div class="mrgn-30-top">
                   <button style="background-color: #04AA6D;" type="submit" class="btn btn-larger btn-block" >
                   Update Profile
