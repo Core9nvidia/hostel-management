@@ -6,6 +6,7 @@ const app=express();
 const User=require('./models/schema');
 const Blog=require('./models/blogModel');
 const Due=require('./models/duesModel');
+const appController = require("./appController");
 //const AllUser=require('./models/AllUser');
 app.set('view engine','ejs');
 app.use(express.static('public'));
@@ -259,20 +260,31 @@ app.post('/deleteprofile/:id',(req,res)=>{
 });
 // room change seciotn ----------------------------------------------------------
 app.get('/roomchangerequest',isLoggedIn,async (req,res)=>{
-    let userData = await User.findOne({email:req.session.email});
-    res.render('roomchangerequestUpdate',{response:"nothing",user:userData, ishmc:req.session.hmc, name:req.session.firstname});
-});
-app.post('/updateroomchangerequest',(req,res)=>{
     User.findOne({email:req.session.email})
     .then((result)=>{
-        result.requestedroom=req.body.requestedroom;
-        result.reasonOfRoomChange=req.body.reason;
-        result.save()
+        res.render('roomchangerequestUpdate',{response:"nothing",user:result, ishmc:req.session.hmc, name:req.session.firstname});
+    });
+    
+});
+app.post('/updateroomchangerequest',(req,res)=>{
+    //console.log("see rroom ",req.body,req.body.requestedroom, typeof(req.body.requestedroom));
+    let req_room = req.body.requestedroom;
+    if((req_room[0]==='A' || req_room[0]==='B' || req_room[0]==='C') && req_room.length === 4){
+        User.findOne({email:req.session.email})
+        .then((result)=>{
+            result.requestedroom=req.body.requestedroom;result.reasonOfRoomChange=req.body.reason;
+            result.save()
             .then((result2)=>{
-                res.redirect('/home');
-            })
-    })
-    .catch(err=>console.log(err));
+                    res.redirect('/home');
+                })
+        })
+    }else{
+        User.findOne({email:req.session.email})
+        .then((result)=>{
+            res.render('roomchangerequestUpdate',{response:"Requested room no. is Incorrect",user:result, ishmc:req.session.hmc, name:req.session.firstname});
+        });
+    }
+    
 });
 // ---------------------------- announcement section -----------------------------ERROR
 // create an announcement
