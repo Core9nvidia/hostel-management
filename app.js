@@ -35,15 +35,9 @@ function isHMC(req,res,next){
 // redirect to login/signup page
 app.get('/',(req,res)=>{
     res.render('index',{response:"nothing",ishmc:req.session.hmc,name:req.session.firstname});
-})
-// logout
-app.get('/logout', isLoggedIn,(req, res) => {
-    // clear the session variables
-    req.logout();
-    req.session.destroy();
-    // render the login page
-    res.render('index',{response:"Logged out sucessfully!"});
 });
+// logout
+app.get('/logout', isLoggedIn,appController.logout);
 // get home page
 app.get('/home',isLoggedIn,(req,res)=>{
     // find all the announcements(blog) , sort them from their created time(newest first)
@@ -89,7 +83,7 @@ app.get('/deleteaccount',isLoggedIn,async (req,res)=>{
 });
 
 // user can delete account
-app.post('/deleteaccount',isLoggedIn,);
+app.post('/deleteaccount',isLoggedIn,appController.deleteaccount_post);
 
 // Sign up to website
 app.post('/signup',appController.signup_post);
@@ -113,10 +107,13 @@ app.get('/roomchangerequest',isLoggedIn,async (req,res)=>{
     .then((result)=>{
         res.render('roomchangerequestUpdate',{response:"nothing",user:result, ishmc:req.session.hmc, name:req.session.firstname});
     });
-    
 });
 // update room change request
 app.post('/updateroomchangerequest',appController.updateroomchangerequest_post);
+// delete room change request
+app.post('/deleteroomchangerequest',appController.deleteroomchangerequest_post);
+// add room change request
+app.post('/addroomchangerequest',appController.addroomchangerequest_post);
 // ---------------------------- announcement section -----------------------------ERROR
 // create an announcement
 app.get('/createannouncement',isHMC, (req, res) => {
@@ -124,12 +121,17 @@ app.get('/createannouncement',isHMC, (req, res) => {
 });
 // create an announcement
 app.post('/createannouncement',isHMC, (req, res) => {
-    const newAnnouncement = new Blog(req.body);
-    newAnnouncement.save()
-        .then((result)=>{
-            res.redirect('/home');
-        })
-        .catch(err=>console.log(err));
+    if(req.body.body.length <= 255){
+        const newAnnouncement = new Blog(req.body);
+        newAnnouncement.save()
+            .then((result)=>{
+                res.redirect('/home');
+            })
+            .catch(err=>console.log(err));
+    }else{
+        res.render('createAnnouncement', { title: 'Create a new blog',response:"Announcememnt body length can't be greater than 255." , ishmc:req.session.hmc, name:req.session.firstname});
+    }
+    
 });
 // show a particular blog with given id
 app.get('/blogs/:id',isLoggedIn, (req, res) => {
@@ -160,16 +162,12 @@ app.post('/deleteblog/:id',appController.deleteannouncement_post);
 // show dues of the person logged in 
 app.get('/dues',isLoggedIn,async (req,res)=>{
     let result  = await User.findOne({email:req.session.email}).populate('dues');
-    console.log("gggggg ",result);
     res.render('view_all_dues',{dues:result.dues,response:"nothing",name:req.session.firstname,ishmc:req.session.hmc});
-
 });
 // show dues of a person for given id
 app.post('/getdues/:id',isHMC,async (req,res)=>{
     let result  = await User.findById(req.params.id).populate('dues');
-    console.log("ggggggg due dede ",result,req.session.hmc);
     res.render('view_all_dues_as_hmc',{dues:result.dues,response:"nothing",name:req.session.firstname,ishmc:req.session.hmc});
-
 });
 // show required details to create a new due
 app.get('/createdue',isLoggedIn,isHMC,(req,res)=>{

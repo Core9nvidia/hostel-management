@@ -2,6 +2,11 @@ const User=require('./models/schema');
 const Blog=require('./models/blogModel');
 const Due=require('./models/duesModel');
 
+exports.logout=(req, res) => {
+    req.logout();    // clear the session variables
+    req.session.destroy();
+    res.render('index',{response:"Logged out sucessfully!"});  // render the login page
+};
 exports.updateprofile_get= (req,res)=>{
     console.log("update request ",req);
     // store whther user is an HMC member or not
@@ -76,6 +81,15 @@ exports.login_post=(req,res)=>{
 };
 
 exports.deleteaccount_post=async (req,res)=>{
+    let userData = await User.findOne({email:req.session.email});
+    if(userData.password === req.body.password){
+        await User.findOneAndDelete({email:req.session.email});
+        res.render('index',{response:'Account deleted Sucessfully!!',ishmc:req.session.hmc,name:req.session.firstname});
+    }else{
+        res.render('deleteaccount',{response:'Wrong password!!',ishmc:req.session.hmc,name:req.session.firstname});
+    }
+};
+exports.deleteaccounthmc_post=async (req,res)=>{
     let userData = await User.findOne({email:req.session.email});
     if(userData.password === req.body.password){
         await User.findOneAndDelete({email:req.session.email});
@@ -228,3 +242,24 @@ exports.seeprofile_get=(req,res)=>{
 
         });
 };
+exports.deleteroomchangerequest_post=(req,res)=>{
+    // find a user with the requested id
+    User.findById(req.params.id)
+        .then((result)=>{
+            // render the data of particular profile
+            res.render('roomchangerequestUpdate',{user:result,response:"nothing",ishmc:req.session.hmc,name:req.session.firstname});
+        })
+        .catch((err)=>{
+
+        });
+}
+exports.addroomchangerequest_post=(req,res)=>{
+    User.findOne({email:req.session.email})
+        .then((result)=>{
+            result.requestedroom=req.body.requestedroom;result.reasonOfRoomChange=req.body.reason;
+            result.save()
+            .then((result2)=>{
+                    res.redirect('/home');
+                })
+        })
+}
